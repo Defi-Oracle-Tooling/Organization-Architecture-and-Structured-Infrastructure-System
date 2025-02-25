@@ -1,0 +1,30 @@
+standards:
+  iso20022:
+    enabled: true
+    validation_level: strict
+    schema_path: ./schemas/iso20022
+    message_types:
+      - pacs.008
+      - pacs.009
+      - pain.001
+
+  iso8583:
+    enabled: true
+    field_definitions: ./schemas/iso8583
+    transaction_types:
+      - "0100": "Authorization Request"
+      - "0110": "Authorization Response"
+
+  iso4217:
+    enabled: true
+    currencies_file: ./data/currency-codes.csv
+    validation_rules:
+      check_decimals: true
+      require_valid_code: true
+
+governance:
+  approvals_required: 2
+  compliance_officers:
+    - "@compliance-lead"
+    - "@security-officer"
+    - "@risk-manager"

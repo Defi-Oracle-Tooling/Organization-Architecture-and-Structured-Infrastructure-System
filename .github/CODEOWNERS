@@ -1,0 +1,16 @@
+# Core infrastructure
+/packages/core/* @core-devs
+
+# Core smart contracts
+/contracts/ @tech-leads
+
+# CI/CD configurations
+/.github/workflows/ @devops-team
+
+# SDK packages
+/packages/stablecoin-sdk/ @core-devs
+/packages/defi-oracle-sdk/ @core-devs
+/packages/zkp-sdk/ @security-team
+
+# Security configurations
+/security/ @security-team

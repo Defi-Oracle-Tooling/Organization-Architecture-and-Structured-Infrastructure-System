@@ -1,0 +1,6 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - 'contracts/*'
+  - 'sdks/*'
+  - 'packages/monitoring-sdk'

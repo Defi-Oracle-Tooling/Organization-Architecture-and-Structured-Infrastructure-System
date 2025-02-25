@@ -1,0 +1,19 @@
+{
+  "name": "@ei/stablecoin-sdk",
+  "version": "1.0.0",
+  "description": "Stablecoin management SDK",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0",
+    "web3": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0"
+  }
+}

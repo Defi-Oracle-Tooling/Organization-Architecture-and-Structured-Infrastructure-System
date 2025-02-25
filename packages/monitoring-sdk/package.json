@@ -1,0 +1,9 @@
+{
+  "name": "@absolute-realms/monitoring-sdk",
+  "version": "1.0.0",
+  "dependencies": {
+    "@opentelemetry/api": "^1.4.1",
+    "@prometheus/client": "^0.5.0",
+    "graphql": "^16.6.0"
+  }
+}

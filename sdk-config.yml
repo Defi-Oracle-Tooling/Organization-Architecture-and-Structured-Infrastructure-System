@@ -1,0 +1,25 @@
+shared_sdks:
+  web3:
+    name: "@absolute-realms/web3-core"
+    version: "1.0.0"
+    packages:
+      - name: "contracts"
+        description: "Shared smart contract libraries"
+      - name: "utils"
+        description: "Common utilities and helpers"
+      - name: "types"
+        description: "Shared TypeScript definitions"
+
+  security:
+    name: "@absolute-realms/security-core"
+    version: "1.0.0"
+    packages:
+      - name: "audit"
+        description: "Security audit tools"
+      - name: "multi-sig"
+        description: "Multi-signature implementation"
+
+deployment:
+  registry: "github"
+  scope: "@absolute-realms"
+  access: "restricted"

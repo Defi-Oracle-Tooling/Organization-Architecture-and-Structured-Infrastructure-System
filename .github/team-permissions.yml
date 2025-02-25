@@ -1,0 +1,25 @@
+teams:
+  core-devs:
+    permission: admin
+    members_count: 5
+    repositories:
+      - "elemental-imperium/core"
+      - "defi-oracle/mainnet"
+      
+  security-team:
+    permission: write
+    members_count: 3
+    repositories:
+      - "quantum-unity/ai-tools"
+      
+  devops-team:
+    permission: maintain
+    members_count: 3
+    repositories:
+      - "*"
+
+  oracle-team:
+    permission: write
+    members_count: 4
+    repositories:
+      - "defi-oracle/mainnet"

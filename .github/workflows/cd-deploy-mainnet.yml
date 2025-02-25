@@ -1,0 +1,25 @@
+name: Deploy to Mainnet
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: mainnet
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check Required Approvals
+        uses: softprops/action-gh-pr-approvals@v1
+        with:
+          min-approvals: 3
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Deploy Contracts
+        if: success()
+        run: |
+          npx hardhat run scripts/deploy.ts --network mainnet
+        env:
+          PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}

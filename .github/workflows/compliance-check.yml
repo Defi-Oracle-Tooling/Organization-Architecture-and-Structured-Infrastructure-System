@@ -1,0 +1,37 @@
+name: ISO Compliance Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: ISO 20022 Message Validation
+        run: |
+          python scripts/validate_iso20022.py
+          
+      - name: AML Compliance Check
+        run: |
+          node scripts/check_aml.js
+          
+      - name: Security Policy Validation
+        run: |
+          sh scripts/validate_security.sh
+
+      - name: Report Results
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const results = require('./compliance-report.json');
+            core.summary.addHeading('Compliance Check Results')
+              .addTable(results)
+              .write()

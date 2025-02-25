@@ -1,0 +1,34 @@
+team_structure:
+  admin:
+    name: "Admin"
+    permissions: ["admin"]
+    members: ["security-lead", "cto"]
+    
+  security:
+    name: "Security"
+    permissions: ["write", "security-audit"]
+    required_reviews: 1
+    
+  development:
+    name: "Development"
+    permissions: ["write"]
+    required_reviews: 2
+
+multi_sig:
+  mainnet_deployment:
+    required_signatures: 3
+    timelock_hours: 24
+    authorized_roles: ["admin", "security"]
+    
+  contract_upgrade:
+    required_signatures: 2
+    timelock_hours: 48
+    authorized_roles: ["admin"]
+
+access_policies:
+  repositories:
+    default:
+      branch_protection: true
+      require_reviews: true
+      dismiss_stale_reviews: true
+      require_status_checks: true
