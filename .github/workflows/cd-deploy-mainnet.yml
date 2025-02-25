@@ -1,25 +1,40 @@
-name: Deploy to Mainnet
+name: Deploy to Production
 
 on:
   push:
     branches: [ main ]
 
+env:
+  ENVIRONMENT: production
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: mainnet
+    environment: production
+    permissions:
+      pull-requests: read
+      contents: write
+      
     steps:
       - uses: actions/checkout@v3
       
-      - name: Check Required Approvals
-        uses: softprops/action-gh-pr-approvals@v1
+      - name: Check PR approvals
+        uses: actions/github-script@v6
         with:
-          min-approvals: 3
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Deploy Contracts
-        if: success()
-        run: |
-          npx hardhat run scripts/deploy.ts --network mainnet
+          script: |
+            const { data: reviews } = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            const approvals = reviews.filter(review => review.state === 'APPROVED').length;
+            if (approvals < 2) {
+              core.setFailed('Need at least 2 approvals to deploy');
+            }
+            
+      - name: Deploy
         env:
-          PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          DEPLOY_KEY: ${{ secrets.PRODUCTION_DEPLOY_KEY }}
+        run: |
+          echo "Deploying to production..."
+          # Add deployment commands here

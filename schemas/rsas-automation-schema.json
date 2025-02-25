@@ -1,29 +1,191 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
+  "required": ["governance", "monitoring", "code_reviews", "code_standards", "security_checks", "monorepo_rules", "environments"],
   "properties": {
     "governance": {
       "type": "object",
-      "required": ["approvals"]
+      "required": ["approved_domains", "required_reviews", "branch_protection"],
+      "properties": {
+        "approved_domains": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "required_reviews": { "type": "integer" },
+        "branch_protection": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "require_signatures": { "type": "boolean" },
+              "require_status_checks": { "type": "boolean" },
+              "allow_force_push": { "type": "boolean" }
+            }
+          }
+        }
+      }
     },
     "monitoring": {
       "type": "object",
-      "required": ["metrics", "alerts"]
+      "required": ["metrics", "alerts"],
+      "properties": {
+        "alerts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "notify"],
+            "properties": {
+              "type": { "type": "string" },
+              "notify": {
+                "type": "array",
+                "items": { "type": "string", "format": "email" }
+              }
+            }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "required": ["collect_performance", "collect_coverage", "retention_days"],
+          "properties": {
+            "collect_performance": { "type": "boolean" },
+            "collect_coverage": { "type": "boolean" },
+            "retention_days": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
     },
     "code_reviews": {
-      "type": "object"
+      "type": "object",
+      "required": ["automated_checks", "assign_strategy", "review_template", "auto_assign_groups"],
+      "properties": {
+        "automated_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": { "type": "string" }
+            }
+          }
+        },
+        "assign_strategy": { "type": "string", "enum": ["round_robin"] },
+        "review_template": { "type": "string" },
+        "auto_assign_groups": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
     },
     "code_standards": {
-      "type": "object"
+      "type": "object",
+      "required": ["linting", "formatting", "commit_conventions"],
+      "properties": {
+        "linting": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["tool", "config"],
+            "properties": {
+              "tool": { "type": "string" },
+              "config": { "type": "string" }
+            }
+          }
+        },
+        "formatting": {
+          "type": "object",
+          "required": ["tool", "config"],
+          "properties": {
+            "tool": { "type": "string" },
+            "config": { "type": "string" }
+          }
+        },
+        "commit_conventions": {
+          "type": "object",
+          "required": ["pattern", "max_length"],
+          "properties": {
+            "pattern": { "type": "string" },
+            "max_length": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
     },
     "security_checks": {
-      "type": "object"
+      "type": "object",
+      "required": ["scan_schedule", "tools", "vulnerability_threshold"],
+      "properties": {
+        "scan_schedule": { "type": "string" },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "version"],
+            "properties": {
+              "name": { "type": "string" },
+              "version": { "type": "string" }
+            }
+          }
+        },
+        "vulnerability_threshold": {
+          "type": "object",
+          "required": ["critical", "high", "medium"],
+          "properties": {
+            "critical": { "type": "integer", "minimum": 0 },
+            "high": { "type": "integer", "minimum": 0 },
+            "medium": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
     },
     "monorepo_rules": {
-      "type": "object"
+      "type": "object",
+      "required": ["workspace_patterns", "shared_dependencies", "build_order"],
+      "properties": {
+        "workspace_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "shared_dependencies": {
+          "type": "object",
+          "required": ["location", "allowed_consumers"],
+          "properties": {
+            "location": { "type": "string" },
+            "allowed_consumers": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "build_order": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
     },
     "environments": {
-      "type": "array"
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "deployment": {
+            "type": "object",
+            "properties": {
+              "requires_approval": { "type": "boolean" },
+              "auto_rollback": { "type": "boolean" },
+              "strategy": { "type": "string", "enum": ["rolling", "blue_green"] }
+            }
+          },
+          "monitoring": {
+            "type": "object",
+            "properties": {
+              "health_check_path": { "type": "string" },
+              "alert_threshold": { "type": "number" }
+            }
+          }
+        }
+      }
     }
   }
 }

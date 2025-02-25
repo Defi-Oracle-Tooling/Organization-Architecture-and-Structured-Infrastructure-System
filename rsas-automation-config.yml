@@ -1,23 +1,105 @@
 # yaml-language-server: $schema=./schemas/rsas-automation-schema.json
 
-# Copy of automation rules with schema validation
 governance:
-  # ...existing code...
+  approved_domains:
+    - company.com
+    - contractor.company.com
+  required_reviews: 2
+  branch_protection:
+    main:
+      require_signatures: true
+      require_status_checks: true
+      allow_force_push: false
+    release:
+      require_signatures: true
+      require_status_checks: true
+      allow_force_push: false
 
 monitoring:
-  # ...existing code...
+  alerts:
+    - type: pipeline_failure
+      notify: ["devops-team@company.com"]
+    - type: security_vulnerability
+      notify: ["security-team@company.com"]
+  metrics:
+    collect_performance: true
+    collect_coverage: true
+    retention_days: 90
 
 code_reviews:
-  # ...existing code...
+  automated_checks:
+    - type: lint
+    - type: test
+    - type: security
+  assign_strategy: round_robin
+  review_template: .github/PULL_REQUEST_TEMPLATE.md
+  auto_assign_groups:
+    frontend: ["fe-team"]
+    backend: ["be-team"]
+    infrastructure: ["devops-team"]
 
 code_standards:
-  # ...existing code...
+  linting:
+    javascript:
+      tool: eslint
+      config: .eslintrc.json
+    python:
+      tool: pylint
+      config: pylintrc
+  formatting:
+    tool: prettier
+    config: .prettierrc
+  commit_conventions:
+    pattern: "^(feat|fix|docs|style|refactor|test|chore):"
+    max_length: 72
 
 security_checks:
-  # ...existing code...
+  scan_schedule: "0 0 * * *"  # Daily at midnight
+  tools:
+    - name: dependency-check
+      version: latest
+    - name: sonarqube
+      version: "8.9"
+  vulnerability_threshold:
+    critical: 0
+    high: 0
+    medium: 5
 
 monorepo_rules:
-  # ...existing code...
+  workspace_patterns:
+    - apps/*
+    - libs/*
+    - tools/*
+  shared_dependencies:
+    location: libs/shared
+    allowed_consumers: ["*"]
+  build_order:
+    - libs/shared
+    - libs/*
+    - apps/*
 
 environments:
-  # ...existing code...
+  production:
+    deployment:
+      requires_approval: true
+      auto_rollback: true
+      strategy: blue_green
+    monitoring:
+      health_check_path: /health
+      alert_threshold: 99.95
+  staging:
+    deployment:
+      requires_approval: false
+      auto_rollback: true
+      strategy: rolling
+    monitoring:
+      health_check_path: /health
+      alert_threshold: 99.0
+  development:
+    deployment:
+      requires_approval: false
+      auto_rollback: false
+      strategy: rolling
+    monitoring:
+      health_check_path: /health
+      alert_threshold: 95.0

@@ -17,15 +17,32 @@ jobs:
       - name: Run Slither
         run: slither contracts/
 
-      - name: Run MythX Analysis
-        uses: MythX/mythx-action@v1
-        with:
-          api-key: ${{ secrets.MYTHX_API_KEY }}
-          contracts: 'contracts/'
-          mode: standard
+      - name: Run MythX CLI Analysis
+        run: |
+          npm install -g mythx-cli
+          mythx --api-key ${{ secrets.MYTHX_API_KEY }} analyze contracts/
+        env:
+          MYTHX_API_KEY: ${{ secrets.MYTHX_API_KEY }}
 
+      - name: Install Certora CLI
+        run: |
+          pip3 install certora-cli
+          
       - name: Run Certora Verification
-        uses: Certora/certora-action@v1
+        run: |
+          certoraRun specs/verify.spec \
+            --solc solc8.0 \
+            --path contracts/ \
+            --settings -t=600
+        env:
+          CERTORAKEY: ${{ secrets.CERTORA_API_KEY }}
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
-          api-key: ${{ secrets.CERTORA_API_KEY }}
-          spec: 'specs/verify.spec'
+          name: security-audit-results
+          path: |
+            slither-results.json
+            mythx-results.json
+            certora-results.json

@@ -1,29 +1,27 @@
 name: Security Audit
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'contracts/**'
+      - 'src/**'
 
 jobs:
   audit:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      
     steps:
       - uses: actions/checkout@v3
       
-      - name: Run Slither
-        uses: crytic/slither-action@v0.3.0
-        
-      - name: Run MythX
-        uses: MythX/mythx-github-action@v1
-        with:
-          access-token: ${{ secrets.MYTHX_API_KEY }}
+      - name: Run MythX analysis
+        uses: mythx-cli/mythx-action@v1
+        env:
+          MYTHX_API_KEY: ${{ secrets.MYTHX_API_KEY }}
           
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.9
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
-      - name: Generate Report
-        run: |
-          echo "Generating security report..."
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

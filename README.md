@@ -228,3 +228,24 @@ Main and develop branches are protected. See `.github/REPOSITORY_SETUP.md` for d
         </div>
     </div>
 </div>
+
+# RSAS Style Organization Bench
+
+Development environment setup for RSAS-style organization with automated checks, linting, and security scanning.
+
+## Setup
+
+1. Clone the repository
+2. Run `npm install`
+3. Copy `.env.example` to `.env` and configure
+4. Run `docker-compose up` to start development environment
+
+## Development
+
+- `npm run lint`: Run code linting
+- `npm run format`: Format code
+- `npm test`: Run tests
+
+## Contributing
+
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines.
