@@ -1,5 +1,10 @@
 <div align="center">
-    <img src="assets/banner.png" alt="CSIP Banner" style="width: 100%; max-width: 800px; border-radius: 10px; margin: 20px 0;"/>
+    <img src="assets/banner.svg" alt="CSIP Platform Banner" 
+         style="width: 100%; max-width: 1600px; height: auto; border-radius: 10px; margin: 20px 0;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+                transition: transform 0.3s ease-in-out;"
+         onmouseover="this.style.transform='scale(1.01)'" 
+         onmouseout="this.style.transform='scale(1)'"/>
 </div>
 
 ```ascii
@@ -197,14 +202,29 @@ Main and develop branches are protected. See `.github/REPOSITORY_SETUP.md` for d
 |---------|---------|--------|
 | 🌟 Customer Success | success@example.com | <img src="https://shields.io/badge/Online-green?style=flat-square" /> |
 | 🔧 Technical Support | support@example.com | <img src="https://shields.io/badge/24/7-blue?style=flat-square" /> |
-| 🚨 Emergency Line | +1 (888) 555-0123 | <img src="https://shields.io/badge/Urgent-red?style=flat-square" /> |
+| 🚨 Emergency Line | +1 (888) 555-0123 | <img src="https://shields.io-badge/Urgent-red?style=flat-square" /> |
 
 </div>
 
-<div align="center">
-    <img src="assets/footer-wave.svg" alt="Footer Wave" style="width: 100%; margin-top: 30px;">
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white;">
-        <b>Powered by Enterprise-Grade Infrastructure</b><br>
-        <sub>© 2024 CSIP Platform. All rights reserved.</sub>
+<div align="center" class="footer-container" style="margin-top: 60px; position: relative;">
+    <!-- Wave SVG with proper aspect ratio -->
+    <img src="assets/footer-wave.svg" alt="Decorative wave pattern" 
+         style="width: 100%; height: auto; display: block; margin-bottom: -5px;">
+    
+    <!-- Enhanced footer content -->
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                padding: 30px 20px; 
+                color: white;
+                position: relative;
+                box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+                border-top: 1px solid rgba(255,255,255,0.1);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <strong style="font-size: 1.2em; display: block; margin-bottom: 10px;">
+                Powered by Enterprise-Grade Infrastructure
+            </strong>
+            <div style="opacity: 0.9; font-size: 0.9em; margin-top: 5px;">
+                © 2024 CSIP Platform. All rights reserved.
+            </div>
+        </div>
     </div>
 </div>
