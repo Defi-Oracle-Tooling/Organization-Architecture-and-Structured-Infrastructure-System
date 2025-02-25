@@ -1,0 +1,58 @@
+name: SVG Optimization Pipeline
+
+on:
+  push:
+    paths:
+      - "**/*.svg"
+  pull_request:
+    paths:
+      - "**/*.svg"
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install SVGO
+        run: npm install -g svgo
+
+      - name: Optimize SVGs
+        run: |
+          find . -name "*.svg" -type f -exec svgo {} \
+            --enable=removeUnusedNS \
+            --enable=removeUselessDefs \
+            --enable=removeEmptyAttrs \
+            --enable=removeEmptyContainers \
+            --enable=mergePaths \
+            --enable=cleanupNumericValues \
+            --enable=convertPathData \
+            --enable=removeMetadata \
+            --enable=addAttributesToSVGElement={attributes:[{role:'img'}]} \;
+
+      - name: Validate Accessibility
+        run: |
+          find . -name "*.svg" -type f -exec sh -c '
+            if ! grep -q "aria-label" "{}"; then
+              echo "Warning: {} missing aria-label"
+              exit 1
+            fi
+            if ! grep -q "<title>" "{}"; then
+              echo "Warning: {} missing title element"
+              exit 1
+            fi
+          ' \;
+
+      - name: Create PR with optimizations
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "chore: optimize SVG files"
+          title: "Automated SVG Optimization"
+          body: "Applied standard SVG optimizations per documentation guidelines"
+          branch: svg-optimization
