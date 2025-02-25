@@ -1,0 +1,24 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 3a6 6 0 00-6 6v4.8l-2 2.4V18h16v-1.8l-2-2.4V9a6 6 0 00-6-6z" 
+        fill="currentColor" opacity="0.8">
+    <animate attributeName="transform"
+      attributeType="XML"
+      type="rotate"
+      from="0 12 12"
+      to="20 12 12"
+      dur="0.3s"
+      begin="mouseover"
+      repeatCount="1"
+      fill="freeze"/>
+    <animate attributeName="transform"
+      attributeType="XML"
+      type="rotate"
+      from="20 12 12"
+      to="0 12 12"
+      dur="0.3s"
+      begin="mouseout"
+      repeatCount="1"
+      fill="freeze"/>
+  </path>
+  <path d="M10 20h4a2 2 0 01-4 0z" fill="currentColor"/>
+</svg>

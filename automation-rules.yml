@@ -61,14 +61,13 @@ monorepo_rules:
     solidity: true
     testing: true
 
-ci_cd:
-  environments:
-    - name: "development"
-      auto_deploy: true
-    - name: "staging"
-      auto_deploy: true
-      requires_approval: false
-    - name: "production"
-      auto_deploy: false
-      requires_approval: true
-      approval_teams: ["Security", "Infrastructure"]
+environments:
+  - name: "development"
+    auto_deploy: true
+  - name: "staging"
+    auto_deploy: true
+    requires_approval: false
+  - name: "production"
+    auto_deploy: false
+    requires_approval: true
+    approval_teams: ["Security", "Infrastructure"]

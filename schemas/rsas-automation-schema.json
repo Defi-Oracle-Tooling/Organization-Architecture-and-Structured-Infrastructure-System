@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "governance": {
+      "type": "object",
+      "required": ["approvals"]
+    },
+    "monitoring": {
+      "type": "object",
+      "required": ["metrics", "alerts"]
+    },
+    "code_reviews": {
+      "type": "object"
+    },
+    "code_standards": {
+      "type": "object"
+    },
+    "security_checks": {
+      "type": "object"
+    },
+    "monorepo_rules": {
+      "type": "object"
+    },
+    "environments": {
+      "type": "array"
+    }
+  }
+}

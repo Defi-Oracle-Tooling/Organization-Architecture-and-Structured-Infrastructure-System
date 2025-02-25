@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=./schemas/rsas-automation-schema.json
+
+# Copy of automation rules with schema validation
+governance:
+  # ...existing code...
+
+monitoring:
+  # ...existing code...
+
+code_reviews:
+  # ...existing code...
+
+code_standards:
+  # ...existing code...
+
+security_checks:
+  # ...existing code...
+
+monorepo_rules:
+  # ...existing code...
+
+environments:
+  # ...existing code...
