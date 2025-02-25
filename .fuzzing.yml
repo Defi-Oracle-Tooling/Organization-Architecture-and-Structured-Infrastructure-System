@@ -1,0 +1,30 @@
+version: '1.0'
+
+project:
+  name: "smart-contracts"
+  tags:
+    - security-audit
+    - production
+
+build:
+  compiler:
+    version: '0.8.17'
+    optimizer:
+      enabled: true
+      runs: 200
+
+analysis:
+  workers: 8
+  mode: quick
+  target:
+    include:
+      - contracts/*.sol
+  campaign:
+    maxTime: 24h
+    stopOnFirstFinding: false
+    coverageTarget: 90
+
+reporting:
+  pullRequest:
+    comments: true
+    failOnIssues: true

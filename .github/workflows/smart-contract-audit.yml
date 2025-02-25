@@ -17,12 +17,11 @@ jobs:
       - name: Run Slither
         run: slither contracts/
 
-      - name: Run MythX CLI Analysis
+      - name: Run Echidna Fuzzing
         run: |
-          npm install -g mythx-cli
-          mythx --api-key ${{ secrets.MYTHX_API_KEY }} analyze contracts/
+          docker run -v ${PWD}:/src crytic/echidna /src/contracts
         env:
-          MYTHX_API_KEY: ${{ secrets.MYTHX_API_KEY }}
+          FUZZING_API_KEY: ${{ secrets.FUZZING_API_KEY }}
 
       - name: Install Certora CLI
         run: |
@@ -44,5 +43,5 @@ jobs:
           name: security-audit-results
           path: |
             slither-results.json
-            mythx-results.json
+            fuzzing-results.json
             certora-results.json

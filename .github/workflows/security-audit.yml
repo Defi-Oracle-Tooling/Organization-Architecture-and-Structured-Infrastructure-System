@@ -11,17 +11,46 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
+      contents: read
+    
+    env:
+      FUZZ_API_KEY: ${{ secrets.FUZZ_API_KEY }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
     steps:
       - uses: actions/checkout@v3
       
-      - name: Run MythX analysis
-        uses: mythx-cli/mythx-action@v1
-        env:
-          MYTHX_API_KEY: ${{ secrets.MYTHX_API_KEY }}
+      - name: Install Fuzzing CLI
+        run: |
+          npm install -g @diligence/fuzzing
           
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1.9
+      - name: Run Fuzzing Analysis
+        run: |
+          fuzzing login --key "$FUZZ_API_KEY"
+          fuzzing init --name "${GITHUB_REPOSITORY##*/}" --targets contracts/
+          fuzzing start --timeout 24h
+          
+      - name: Setup SonarCloud Scanner
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.organization=${GITHUB_REPOSITORY_OWNER}
+            -Dsonar.projectKey=${GITHUB_REPOSITORY/\//_}
+            -Dsonar.sources=.
+            -Dsonar.coverage.exclusions=test/**
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        with:
+          target: 'contracts/'
+          
+      - name: Upload Security Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: |
+            fuzzing-report.json
+            slither-report.json

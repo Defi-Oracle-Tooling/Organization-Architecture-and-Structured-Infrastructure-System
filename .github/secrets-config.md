@@ -3,12 +3,18 @@
 The following secrets need to be configured in your GitHub repository settings:
 
 - `SNYK_TOKEN`: API token for Snyk security scanning
-- `MYTHX_API_KEY`: API key for MythX smart contract analysis
+- `FUZZ_API_KEY`: API key from Consensys Diligence Fuzzing dashboard
 - `SONAR_TOKEN`: Token for SonarCloud analysis
 - `PRODUCTION_DEPLOY_KEY`: Deployment credentials for production environment
 - `CERTORA_API_KEY`: API key for Certora formal verification
 
-## Setting up Secrets
+## Setting up Fuzzing Credentials
+
+1. Sign up at https://fuzzing.diligence.tools/
+2. Get your API key from the account settings page
+3. Add as GitHub secret named `FUZZ_API_KEY`
+
+## Setting up Other Secrets
 
 1. Go to your repository settings
 2. Navigate to Secrets and Variables > Actions
